@@ -1,0 +1,90 @@
+Git 操作速查笔记
+
+一、核心概念
+
+工作区（磁盘文件）  →  暂存区（git add）  →  本地仓库（git commit）  →  远程仓库（git push）
+    红色                    绿色                  本地存档                    GitHub
+
+  commit hash：每次提交的唯一身份证号，如 acb7d1d，取前7位即可引用
+
+  origin：远程仓库在本地自动生成的别名，git clone 时自动创建
+  分支：平行时空，从当前代码复制出来独立开发，互不影响
+
+
+二、常用命令
+
+1. 查看状态
+  git status              # 看哪些文件改了、暂存了、提交了
+  git log                 # 看提交历史（标题）
+  git log --stat          # 看提交历史 + 改动了哪些文件
+  git log --oneline       # 一行一个提交，简洁模式
+  git show <hash>         # 看某次提交的完整改动
+  git diff                # 比较 工作区 vs 暂存区（已 commit 之后就没输出了）
+  git diff HEAD~1         # 看上次提交改了什么
+  git diff main branch2   # 比较两个分支的差异
+  git remote -v           # 查看远程仓库地址
+  git branch -vv          # 查看所有分支及其上游绑定
+
+2. 提交三连
+  git add <文件>           # 工作区 → 暂存区
+  git commit -m "说明"     # 暂存区 → 本地仓库（-m 后面是提交说明，不是文件名）
+  git push                # 本地仓库 → GitHub（main 首次绑定后可直接 push）
+
+  git push origin <分支名>  # 新分支第一次 push 要指明推到哪
+  git push -u origin <分支名>  # -u 绑定上游，之后直接 git push 即可
+
+3. 回退
+  git reset HEAD~1         # 撤销提交，保留代码改动（未 push 前用）
+  git reset --hard HEAD~1  # 撤销提交 + 删除代码改动（不可逆，慎用）
+  git revert <hash>        # 生成新提交来抵消旧提交（已 push 后必用这个）
+
+4. 切换版本
+  git checkout <hash>      # 切到某个历史版本查看
+  git checkout main        # 切回最新主线
+  git checkout -b <分支名>  # 创建新分支并切换过去
+
+5. 分支操作
+  git branch <分支名>               # 创建新分支（不会自动切换）
+  git checkout -b <分支名>           # 创建并切换到新分支（推荐）
+  git checkout main                 # 切回 main
+  git merge <分支名>                 # 把目标分支合并到当前分支
+  git branch -d <分支名>             # 删除本地分支
+
+6. 合并冲突
+  只有在同一文件、同一区域（相邻3行内）被两方同时修改时才会冲突
+  不同区域自动合并，无需担心
+  GitHub 通过 Pull Request 来审查和合并分支
+
+
+三、实操记录
+
+  第一次实践：
+  1. 更改 train.py（新增 save_checkpoint / load_checkpoint 方法）
+  2. git add train.py
+  3. git commit -m "新增 checkpoint 保存和恢复方法"
+  4. git push → 推送到 main
+
+  第二次实践（分支开发）：
+  1. git checkout -b new_function     # 建分支并切换
+  2. 更改 train.py（新增 count_trainable_params / format_duration）
+  3. git add train.py
+  4. git commit -m "..."
+  5. git push -u origin new_function  # 推到新分支
+  6. GitHub 上 main 和 new_function 并存，互不影响
+
+
+四、Pull Request 流程
+
+  GitHub 网页操作：
+  1. 点 "Compare & pull request"（或 Pull requests → New pull request）
+  2. base 选 main，compare 选你的分支
+  3. 填标题和描述 → Create pull request（此时还未合并）
+  4. 审查代码 → Merge pull request（真正合并）
+  5. 合并后可选择删除分支
+
+  注意：合并后分支仍在，不会自动删除；主页面黄色提示条只是建议，点左上角分支下拉框切换分支
+
+
+五、快捷键
+
+  git log 查看模式按 q 键退出
