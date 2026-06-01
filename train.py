@@ -143,6 +143,17 @@ class trainer:
             self.model.set_epoch_ratio(epoch_id)
 
 
+def count_trainable_params(model):
+    return sum(p.numel() for p in model.parameters() if p.requires_grad)
+
+
+def format_duration(seconds):
+    h = int(seconds // 3600)
+    m = int((seconds % 3600) // 60)
+    s = int(seconds % 60)
+    return f"{h:02d}:{m:02d}:{s:02d}"
+
+
 def load_data(args):
     data_map = {
         'ETTh1': Dataset_ETT_hour,
