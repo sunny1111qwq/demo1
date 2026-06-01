@@ -138,24 +138,6 @@ class trainer:
         mae = self.MAE(predict, real_val)
         return loss.item(), mae.item()
 
-    def save_checkpoint(self, epoch_id, path):
-        """保存检查点，包含模型、优化器、调度器状态，便于恢复训练"""
-        checkpoint = {
-            'epoch': epoch_id,
-            'model_state_dict': self.model.state_dict(),
-            'optimizer_state_dict': self.optimizer.state_dict(),
-            'scheduler_state_dict': self.scheduler.state_dict(),
-        }
-        torch.save(checkpoint, path)
-
-    def load_checkpoint(self, path):
-        """从检查点恢复训练状态"""
-        checkpoint = torch.load(path)
-        self.model.load_state_dict(checkpoint['model_state_dict'])
-        self.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
-        self.scheduler.load_state_dict(checkpoint['scheduler_state_dict'])
-        return checkpoint['epoch']
-
     def set_epoch(self, epoch_id):
         if hasattr(self.model, "set_epoch_ratio"):
             self.model.set_epoch_ratio(epoch_id)
