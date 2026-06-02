@@ -20,7 +20,7 @@ experiment_results_latest.json
 /MegaCRN-main/
 /model-version/
 /T3
-/train2
+/train2.py
 /layers/.gitignore
 /layers/LICENSE
 /layers/README.md
