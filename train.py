@@ -23,7 +23,7 @@ os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:150"
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--device", type=str, default="cuda", help="")
-    parser.add_argument("--data_path", type=str, default="ETTh1", help="data path")
+    parser.add_argument("--data_path", type=str, default="ETTh2", help="data path")
     parser.add_argument("--channel", type=int, default=128, help="number of features")
     parser.add_argument("--num_nodes", type=int, default=7, help="number of nodes")
     parser.add_argument("--seq_len", type=int, default=96, help="seq_len")
@@ -49,7 +49,6 @@ def parse_args():
     parser.add_argument("--es_patience", type=int, default=5, help="quit if no improvement after this many iterations")
     parser.add_argument("--save", type=str, default="./logs/" + str(time.strftime("%Y-%m-%d-%H-%M-%S")) + "-",
                         help="save path")
-    
     # ========== HybridMemory Hyperparameters ==========
     parser.add_argument("--mem_num", type=int, default=50, 
                         help="number of learnable memory slots (10-30 recommended)")
@@ -73,7 +72,6 @@ class trainer:
             dropout_n,
             d_llm,
             d_ff,
-
             e_layer,
             d_layer,
             head,
@@ -81,12 +79,6 @@ class trainer:
             cma_n_heads,
             cma_gate_hidden,
             vision_mid,
-
-
-
-
-
-
             lrate,
             wdecay,
             device,
@@ -101,10 +93,6 @@ class trainer:
             dropout_n=dropout_n, d_llm=d_llm, e_layer=e_layer, d_layer=d_layer, d_ff=d_ff, head=head,
             num_cma_heads=num_cma_heads, cma_n_heads=cma_n_heads,
             cma_gate_hidden=cma_gate_hidden, vision_mid=vision_mid,
-
-
-
-
             mem_num=mem_num, mem_dim=mem_dim, dynamic_mem_size=dynamic_mem_size, mem_top_k=mem_top_k
         )
         self.epochs = epochs
@@ -193,9 +181,6 @@ def save_experiment_results(args, mse, mae, save_file="experiment_results.csv"):
                        f"lr{args.learning_rate}_dn{args.dropout_n}_dllm{args.d_llm}_dff{args.d_ff}_"
                        f"el{args.e_layer}_dl{args.d_layer}_h{args.head}_"
                        f"cmah{args.num_cma_heads}_cmanh{args.cma_n_heads}_cmagh{args.cma_gate_hidden}_vm{args.vision_mid}_"
-
-
-
                        f"wd{args.weight_decay}_ep{args.epochs}_seed{args.seed}_"
                        f"mtk{args.mem_top_k}")
 
@@ -266,7 +251,6 @@ def main():
         dropout_n=args.dropout_n,
         d_llm=args.d_llm,
         d_ff=args.d_ff,
-
         e_layer=args.e_layer,
         d_layer=args.d_layer,
         head=args.head,
@@ -274,12 +258,6 @@ def main():
         cma_n_heads=args.cma_n_heads,
         cma_gate_hidden=args.cma_gate_hidden,
         vision_mid=args.vision_mid,
-
-
-
-
-
-
         lrate=args.learning_rate,
         wdecay=args.weight_decay,
         device=device,
